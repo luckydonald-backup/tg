@@ -286,8 +286,15 @@ char *get_default_prompt (void) {
       ok = 1;
       l += snprintf (buf + l, 999 - l, "%lld%%Down", 100 * tgl_state.cur_downloaded_bytes / tgl_state.cur_downloading_bytes);
     }
+<<<<<<< HEAD
     l += snprintf (buf + l, 999 - l, "]" COLOR_NORMAL);
     l += snprintf (buf + l, 999 - l, "%s", default_prompt);
+=======
+    l += tsnprintf (buf + l, 999 - l, "]" COLOR_NORMAL);
+    if (unread_messages) {
+      l += tsnprintf (buf + l, 999 - l, "\n");
+    }
+>>>>>>> leFork/master
     return buf;
   } 
   l += snprintf (buf + l, 999 - l, "%s", default_prompt);
@@ -1942,7 +1949,11 @@ void print_user_name (tgl_peer_id_t id, tgl_peer_t *U) {
   assert (tgl_get_peer_type (id) == TGL_PEER_USER);
   push_color (COLOR_RED);
   if (!U) {
+<<<<<<< HEAD
     printf ("user#%d", tgl_get_peer_id (id));
+=======
+    printf ("userid#%d", get_peer_id (id));
+>>>>>>> leFork/master
     int i;
     int ok = 1;
     for (i = 0; i < unknown_user_list_pos; i++) {
@@ -1960,15 +1971,21 @@ void print_user_name (tgl_peer_id_t id, tgl_peer_t *U) {
       push_color (COLOR_REDB);
     }
     if ((U->flags & FLAG_DELETED)) {
+<<<<<<< HEAD
       printf ("deleted user#%d", tgl_get_peer_id (id));
     } else if (!(U->flags & FLAG_CREATED)) {
       printf ("empty user#%d", tgl_get_peer_id (id));
+=======
+      printf ("deleted userid#%d", get_peer_id (id));
+    } else if (!(U->flags & FLAG_CREATED)) {
+      printf ("empty userid#%d", get_peer_id (id));
+>>>>>>> leFork/master
     } else if (!U->user.first_name || !strlen (U->user.first_name)) {
-      printf ("%s", U->user.last_name);
+      printf ("user#%s#%d", U->user.last_name, get_peer_id (id));
     } else if (!U->user.last_name || !strlen (U->user.last_name)) {
-      printf ("%s", U->user.first_name);
+      printf ("user#%s#%d", U->user.first_name, get_peer_id (id));
     } else {
-      printf ("%s %s", U->user.first_name, U->user.last_name); 
+      printf ("user#%s %s#%d", U->user.first_name, U->user.last_name, get_peer_id (id)); 
     }
     if (U->flags & (FLAG_USER_SELF | FLAG_USER_CONTACT)) {
       pop_color ();
@@ -1981,9 +1998,13 @@ void print_chat_name (tgl_peer_id_t id, tgl_peer_t *C) {
   assert (tgl_get_peer_type (id) == TGL_PEER_CHAT);
   push_color (COLOR_MAGENTA);
   if (!C) {
+<<<<<<< HEAD
     printf ("chat#%d", tgl_get_peer_id (id));
+=======
+    printf ("chatid#%d", get_peer_id (id));
+>>>>>>> leFork/master
   } else {
-    printf ("%s", C->chat.title);
+    printf ("chat#%s#%d", C->chat.title, get_peer_id (id));
   }
   pop_color ();
 }
@@ -1992,9 +2013,13 @@ void print_encr_chat_name (tgl_peer_id_t id, tgl_peer_t *C) {
   assert (tgl_get_peer_type (id) == TGL_PEER_ENCR_CHAT);
   push_color (COLOR_MAGENTA);
   if (!C) {
+<<<<<<< HEAD
     printf ("encr_chat#%d", tgl_get_peer_id (id));
+=======
+    printf ("encr_chatid#%d", get_peer_id (id));
+>>>>>>> leFork/master
   } else {
-    printf ("%s", C->print_name);
+    printf ("encr_chat%s#%d", C->print_name, get_peer_id (id));
   }
   pop_color ();
 }
@@ -2003,9 +2028,13 @@ void print_encr_chat_name_full (tgl_peer_id_t id, tgl_peer_t *C) {
   assert (tgl_get_peer_type (id) == TGL_PEER_ENCR_CHAT);
   push_color (COLOR_MAGENTA);
   if (!C) {
+<<<<<<< HEAD
     printf ("encr_chat#%d", tgl_get_peer_id (id));
+=======
+    printf ("encr_chatid#%d", get_peer_id (id));
+>>>>>>> leFork/master
   } else {
-    printf ("%s", C->print_name);
+    printf ("encr_chat#%s#%d", C->print_name, get_peer_id (id));
   }
   pop_color ();
 }
@@ -2036,9 +2065,15 @@ void print_service_message (struct tgl_message *M) {
   }
   print_date (M->date);
   pop_color ();
+<<<<<<< HEAD
   printf (" ");
   if (tgl_get_peer_type (M->to_id) == TGL_PEER_CHAT) {
     print_chat_name (M->to_id, tgl_peer_get (M->to_id));
+=======
+  printf (" {service_message} ");
+  if (get_peer_type (M->to_id) == PEER_CHAT) {
+    print_chat_name (M->to_id, user_chat_get (M->to_id));
+>>>>>>> leFork/master
   } else {
     assert (tgl_get_peer_type (M->to_id) == TGL_PEER_ENCR_CHAT);
     print_encr_chat_name (M->to_id, tgl_peer_get (M->to_id));
@@ -2047,8 +2082,13 @@ void print_service_message (struct tgl_message *M) {
   print_user_name (M->from_id, tgl_peer_get (M->from_id));
  
   switch (M->action.type) {
+<<<<<<< HEAD
   case tgl_message_action_none:
     printf ("\n");
+=======
+  case CODE_message_action_empty:
+    printf ("Empty\n");
+>>>>>>> leFork/master
     break;
   case tgl_message_action_geo_chat_create:
     printf ("Created geo chat\n");
@@ -2134,8 +2174,16 @@ void print_message (struct tgl_message *M) {
       }
       print_date (M->date);
       pop_color ();
+<<<<<<< HEAD
       printf (" ");
       print_user_name (M->to_id, tgl_peer_get (M->to_id));
+=======
+      if (M->media.type != CODE_message_media_empty) {
+        print_media (&M->media);
+      }
+      printf (" {print_message} ");
+      print_user_name (M->to_id, user_chat_get (M->to_id));
+>>>>>>> leFork/master
       push_color (COLOR_GREEN);
       if (M->unread) {
         printf (" <<< ");
@@ -2149,8 +2197,16 @@ void print_message (struct tgl_message *M) {
       }
       print_date (M->date);
       pop_color ();
+<<<<<<< HEAD
       printf (" ");
       print_user_name (M->from_id, tgl_peer_get (M->from_id));
+=======
+      if (M->media.type != CODE_message_media_empty) {
+        print_media (&M->media);
+      }
+      printf (" {print_message} ");
+      print_user_name (M->from_id, user_chat_get (M->from_id));
+>>>>>>> leFork/master
       push_color (COLOR_BLUE);
       if (M->unread) {
         printf (" >>> ");
@@ -2170,7 +2226,10 @@ void print_message (struct tgl_message *M) {
         printf ("%lld ", M->id);
       }
       print_date (M->date);
-      printf (" ");
+      if (M->media.type != CODE_message_media_empty) {
+        print_media (&M->media);
+      }
+      printf (" {print_message} ");
       push_color (COLOR_CYAN);
       printf (" %s", P->print_name);
       pop_color ();
@@ -2185,6 +2244,10 @@ void print_message (struct tgl_message *M) {
         printf ("%lld ", M->id);
       }
       print_date (M->date);
+      if (M->media.type != CODE_message_media_empty) {
+        print_media (&M->media);
+      }
+      printf (" {print_message} ");
       push_color (COLOR_CYAN);
       printf (" %s", P->print_name);
       pop_color ();
@@ -2205,8 +2268,16 @@ void print_message (struct tgl_message *M) {
     }
     print_date (M->date);
     pop_color ();
+<<<<<<< HEAD
     printf (" ");
     print_chat_name (M->to_id, tgl_peer_get (M->to_id));
+=======
+    if (M->media.type != CODE_message_media_empty) {
+      print_media (&M->media);
+    }
+    printf (" {print_message} ");
+    print_chat_name (M->to_id, user_chat_get (M->to_id));
+>>>>>>> leFork/master
     printf (" ");
     print_user_name (M->from_id, tgl_peer_get (M->from_id));
     if ((tgl_get_peer_type (M->from_id) == TGL_PEER_USER) && (tgl_get_peer_id (M->from_id) == tgl_state.our_id)) {
@@ -2233,12 +2304,17 @@ void print_message (struct tgl_message *M) {
   }
   pop_color ();
   assert (!color_stack_pos);
+<<<<<<< HEAD
   printf ("\n");
   //print_end();
 }
 
 void play_sound (void) {
   printf ("\a");
+=======
+  printf ("{end_print_message}\n");
+  print_end();
+>>>>>>> leFork/master
 }
 
 void set_interface_callbacks (void) {

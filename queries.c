@@ -2183,6 +2183,7 @@ void tgl_do_get_chat_info (tgl_peer_id_t id, int offline_mode, void (*callback)(
   printf ("User ");
   print_user_name (U->id, C);
   printf (":\n");
+  printf("\tpeer id: %d\n", U->id.id);
   printf ("\treal name: %s %s\n", U->real_first_name, U->real_last_name);
   printf ("\tphone: %s\n", U->phone);
   if (U->status.online > 0) {
